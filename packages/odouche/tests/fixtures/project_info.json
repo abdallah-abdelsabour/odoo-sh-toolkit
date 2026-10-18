@@ -1,0 +1,105 @@
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "access_token": "REDACTED",
+    "public": false,
+    "active_repo": {
+      "id": 4217,
+      "name": "Odoo-Addons",
+      "owner": "Acme-Corp",
+      "project_name": "acme-shop",
+      "technical_name": "acme-corp-odoo-addons-4217",
+      "odoo_branch": "19.0",
+      "create_date": 1733404800.0,
+      "public": false,
+      "block_odoo_domain": false,
+      "can_be_upgraded": false,
+      "dump_in_progress": false,
+      "is_staff_restricted": false,
+      "pays_dedicated": false,
+      "production_expiration_days_left": null,
+      "subscription_code": "M000000000000000",
+      "subscription_validity": "valid",
+      "production_build_id": {
+        "id": 88001,
+        "branch_name": "19.0",
+        "url": "https://acme-shop.odoo.com",
+        "worker_url": "https://eupd00.odoo.com",
+        "enterprise_code": false
+      }
+    },
+    "repos": [
+      {
+        "id": 4217,
+        "name": "Odoo-Addons",
+        "owner": "Acme-Corp",
+        "project_name": "acme-shop",
+        "technical_name": "acme-corp-odoo-addons-4217",
+        "odoo_branch": "19.0"
+      },
+      {
+        "id": 4302,
+        "name": "intranet-addons",
+        "owner": "acme-corp",
+        "project_name": "intranet",
+        "technical_name": "acme-corp-intranet-addons-4302",
+        "odoo_branch": "19.0"
+      }
+    ],
+    "user": {
+      "id": 7301,
+      "name": "octo-dev",
+      "username": "octo-dev",
+      "email": "dev@example.com",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1000001?v=4",
+      "access": "admin",
+      "is_platform_admin": false,
+      "impostor_name": null,
+      "notification_mail": "warning",
+      "notification_push": "off"
+    },
+    "notifications": {
+      "4217": {
+        "items": [],
+        "unseen_count": 2,
+        "unseen_max_level": "info",
+        "count_by_level": {"critical": 0, "warning": 0, "info": 2}
+      }
+    },
+    "changelogs": {"values": []},
+    "config": {
+      "access_by_stage": {"dev": 100, "staging": 200, "production": 300, "dummy": 300, "duplicate": 300},
+      "access_level_map": {"admin": 300, "tester": 200, "developer": 100, "": 0}
+    },
+    "mappings": {
+      "stage": [
+        ["dummy", "Dummy"],
+        ["duplicate", "Duplicate"],
+        ["dev", "Development"],
+        ["staging", "Staging"],
+        ["production", "Production"]
+      ],
+      "status": [
+        ["progress", "In Progress"],
+        ["updating", "Updating"],
+        ["skipped", "Skipped"],
+        ["killed", "Killed"],
+        ["done", "Done"],
+        ["dropped", "Dropped"]
+      ],
+      "result": [["success", "Success"], ["failed", "Failed"], ["warning", "Warning"]],
+      "push_behavior": [
+        ["nothing", "Do nothing"],
+        ["new", "Start a new build"],
+        ["update", "Update current build"]
+      ],
+      "notification_settings": [
+        ["off", "Disabled"],
+        ["critical", "Critical"],
+        ["warning", "Requires attention"],
+        ["info", "Informative"]
+      ]
+    }
+  }
+}

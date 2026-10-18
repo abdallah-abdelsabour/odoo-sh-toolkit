@@ -1,0 +1,45 @@
+[project]
+name = "odouche-cli"
+version = "0.4.0" # x-release-please-version
+description = "osh: an unofficial command-line interface for Odoo.sh"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Avanserv", email = "avs@avanserv.com" }
+]
+requires-python = ">=3.12"
+keywords = ["odoo", "odoo.sh", "cli"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
+]
+dependencies = [
+    # Exact, because the three packages are released together and tested only together.
+    "odouche==0.4.0", # x-release-please-version
+    "rich>=15.0.0",
+    "typer>=0.27.2",
+]
+
+[project.scripts]
+osh = "odouche_cli.app:main"
+
+[project.urls]
+Homepage = "https://github.com/avanserv/odouche"
+Documentation = "https://avanserv.github.io/odouche/"
+Issues = "https://github.com/avanserv/odouche/issues"
+Changelog = "https://github.com/avanserv/odouche/blob/main/CHANGELOG.md"
+
+[build-system]
+requires = ["uv_build>=0.11.11,<0.13"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+odouche = { workspace = true }

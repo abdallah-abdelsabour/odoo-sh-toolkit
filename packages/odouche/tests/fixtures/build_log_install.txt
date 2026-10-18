@@ -1,0 +1,7 @@
+odoo-bin --init=base --stop-after-init --database acme-shop-feature-invoicing-88240 --log-level=info
+2026-10-01 10:01:11,512 42 INFO ? odoo: Odoo version 19.0
+2026-10-01 10:01:11,513 42 INFO ? odoo: addons paths: ['/home/odoo/src/odoo/addons', '/home/odoo/src/user']
+2026-10-01 10:01:11,513 42 INFO ? odoo: database: default@default:default
+2026-10-01 10:01:12,207 42 INFO acme-shop-feature-invoicing-88240 odoo.modules.loading: loading 1 modules...
+2026-10-01 10:01:14,930 42 INFO acme-shop-feature-invoicing-88240 odoo.modules.loading: 1 modules loaded in 2.72s, 0 queries (+0 extra)
+2026-10-01 10:02:05,018 42 INFO acme-shop-feature-invoicing-88240 odoo.modules.loading: Loading module resource (12/74)

@@ -1,0 +1,55 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "hosting_user_id": 7301,
+    "repos": [
+      {
+        "id": 4217,
+        "name": "Odoo-Addons",
+        "owner": "Acme-Corp",
+        "project_name": "acme-shop",
+        "technical_name": "acme-corp-odoo-addons-4217",
+        "url": "https://github.com/Acme-Corp/Odoo-Addons.git",
+        "project_url": "https://www.odoo.sh/project/acme-shop",
+        "odoo_branch": "19.0",
+        "production_build_id": [88001, "acme-corp-odoo-addons-19-0-88001"],
+        "geolocation": "Europe",
+        "subscription_code": "M000000000000000",
+        "subscription_validity": "valid",
+        "days_left": 0,
+        "user_is_admin": true,
+        "collaborators": ["octo-dev", "jane-doe", "build-bot1"],
+        "notification_counts": {
+          "items": [],
+          "unseen_count": 2,
+          "unseen_max_level": "info",
+          "count_by_level": {"critical": 0, "warning": 0, "info": 2}
+        }
+      },
+      {
+        "id": 4302,
+        "name": "intranet-addons",
+        "owner": "acme-corp",
+        "project_name": "intranet",
+        "technical_name": "acme-corp-intranet-addons-4302",
+        "url": "https://github.com/acme-corp/intranet-addons.git",
+        "project_url": "https://www.odoo.sh/project/intranet",
+        "odoo_branch": "19.0",
+        "production_build_id": [88107, "acme-corp-intranet-addons-19-0-88107"],
+        "geolocation": "Europe",
+        "subscription_code": "M000000000000001",
+        "subscription_validity": "valid",
+        "days_left": 0,
+        "user_is_admin": true,
+        "collaborators": ["octo-dev", "jane-doe", "john-roe", "sam-poe", "alex-low", "kim-yu"],
+        "notification_counts": {
+          "items": [],
+          "unseen_count": 0,
+          "unseen_max_level": "info",
+          "count_by_level": {"critical": 0, "warning": 0, "info": 0}
+        }
+      }
+    ]
+  }
+}

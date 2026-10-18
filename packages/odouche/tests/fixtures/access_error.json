@@ -1,0 +1,17 @@
+{
+  "jsonrpc": "2.0",
+  "id": null,
+  "error": {
+    "code": 0,
+    "message": "Odoo Server Error",
+    "data": {
+      "name": "odoo.exceptions.AccessError",
+      "debug": "",
+      "message": "Uh-oh! Looks like you have stumbled upon some top-secret records.\n\nSorry, octo-dev (id=7301) doesn't have 'read' access to:\n- Repository (paas.repository)\n\nIf you really, really need access, perhaps you can win over your friendly administrator with a batch of freshly baked cookies.",
+      "arguments": [
+        "Uh-oh! Looks like you have stumbled upon some top-secret records.\n\nSorry, octo-dev (id=7301) doesn't have 'read' access to:\n- Repository (paas.repository)\n\nIf you really, really need access, perhaps you can win over your friendly administrator with a batch of freshly baked cookies."
+      ],
+      "context": {}
+    }
+  }
+}

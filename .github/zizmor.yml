@@ -1,0 +1,11 @@
+# What the workflow security audit is allowed to let through, and why. Nothing is disabled here:
+# an exception is taken on the line that needs it, with `# zizmor: ignore[rule]` and the reason
+# beside it, so it cannot outlive the code it excuses.
+
+rules:
+  # Every action is pinned to a commit, GitHub's own included: the repository's Actions settings
+  # refuse anything else. .github/dependabot.yml keeps the pins current.
+  unpinned-uses:
+    config:
+      policies:
+        "*": hash-pin

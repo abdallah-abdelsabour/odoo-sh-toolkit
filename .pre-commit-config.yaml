@@ -1,0 +1,150 @@
+default_language_version:
+    python: python3.12
+
+repos:
+
+  # ----------------------------------------------------------------------------
+  # All files
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        name: all      | fix trailing whitespaces
+      - id: end-of-file-fixer
+        name: all      | fix end of files
+      - id: check-yaml
+        name: all      | check yaml
+      - id: check-toml
+        name: all      | check toml
+      - id: check-merge-conflict
+        name: all      | check merge conflict markers
+      - id: check-added-large-files
+        name: all      | check large files
+        args: ['--maxkb=500']
+
+  # CHANGELOG.md is release-please's output, so a fix applied there is undone by the next release.
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.23.2
+    hooks:
+      - id: markdownlint-cli2
+        name: all      | markdown format (markdownlint)
+        args: ['--fix']
+        exclude: ^CHANGELOG\.md$
+        language_version: '22'
+        additional_dependencies: ['markdownlint-cli2@0.23.2']
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
+    hooks:
+      - id: codespell
+        name: all      | codespell
+        # What it skips is `[tool.codespell]` in pyproject.toml, so a manual run skips the same.
+        additional_dependencies:
+          - tomli
+
+  # The upstream hook sets `pass_filenames: false` because it scans the staged diff rather than
+  # the files it is handed. That also means it finds nothing when CI runs `prek run --all-files`,
+  # since nothing is staged there: the Security Scan job in ci.yml runs `gitleaks dir` over the
+  # whole tree for the case this hook cannot see, and the two together are what make the gate real.
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+        name: all      | secrets (gitleaks)
+
+  # ----------------------------------------------------------------------------
+  # GitHub Actions
+  #
+  # `check-yaml` above proves these files parse; these prove they mean something, and that they do
+  # not hand a pull request more than it should hold.
+
+  - repo: local
+    hooks:
+      - id: zizmor
+        name: actions  | workflow security (zizmor)
+        # The audit set is spelled out so that it matches `make lint` and so that the rules file is
+        # not itself handed to zizmor as a workflow. `files:` below still decides whether the hook
+        # runs, which keeps editing the rules able to fail on what it starts failing.
+        entry: uv run zizmor --no-progress --config .github/zizmor.yml
+          .github/workflows .github/dependabot.yml
+        pass_filenames: false
+        language: system
+        types: [yaml]
+        files: ^\.github/(workflows/.*|dependabot\.ya?ml|zizmor\.ya?ml)$
+        require_serial: true
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+        name: actions  | workflow lint (actionlint)
+
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.38.2
+    hooks:
+      - id: check-github-workflows
+        name: actions  | workflow schema
+      # A job without a timeout holds its runner until GitHub's own six-hour ceiling.
+      - id: check-github-workflows-require-timeout
+        name: actions  | workflow timeouts
+      - id: check-dependabot
+        name: actions  | dependabot schema
+
+  # ----------------------------------------------------------------------------
+  # Python
+  #
+  # Every hook here runs the tool from the project's own environment, so the version is the one
+  # uv.lock pins and `make check` uses: a hook-provisioned copy can drift from the lockfile, and
+  # then the gate applies rules the command never does.
+
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: python   | format (ruff)
+        entry: uv run ruff format --force-exclude
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+
+      - id: ruff
+        name: python   | lint (ruff)
+        entry: uv run ruff check --fix --force-exclude
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+
+      # Holds the layering: each package is checked against its own manifest, so a frontend that
+      # imports something it does not declare (an HTTP client, or the other frontend) fails here.
+      - id: deptry
+        name: python   | dependencies (deptry)
+        entry: make deps
+        language: system
+        files: ^(packages/[^/]+/(src/|pyproject\.toml)|uv\.lock|Makefile)
+        pass_filenames: false
+        require_serial: true
+
+      - id: vulture
+        name: python   | deadcode (vulture)
+        entry: uv run vulture
+        language: system
+        types: [python]
+        pass_filenames: false
+        require_serial: true
+
+      - id: basedpyright
+        name: python   | type check (basedpyright)
+        entry: uv run basedpyright
+        language: system
+        files: ^((packages|examples)/.*\.pyi?|pyrightconfig\.json|uv\.lock)$
+        pass_filenames: false
+        require_serial: true
+
+      # The lockfile is an input to every hook above, so a manifest edited without relocking would
+      # run them against an environment the manifests no longer describe.
+      - id: uv-lock
+        name: python   | lockfile is current (uv)
+        entry: uv lock --check
+        language: system
+        files: (^|/)pyproject\.toml$|^uv\.lock$
+        pass_filenames: false

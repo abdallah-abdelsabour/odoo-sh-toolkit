@@ -1,0 +1,208 @@
+// Shared editor setup for VS Code and VSCodium. Everything here defers to a file the command line
+// already reads (pyproject.toml, pyrightconfig.json, .editorconfig), so the editor reports what
+// `make check` reports and nothing is configured twice.
+{
+  "folders": [
+    {
+      "name": "odouche",
+      // The repository root: a workspace file's paths are relative to the file itself.
+      "path": ".."
+    }
+  ],
+  "settings": {
+    // --- Python environment: the one `uv sync` creates ---
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+
+    // --- Type checking: basedpyright, configured by pyrightconfig.json ---
+    // The Python extension's own language server is switched off so that one checker speaks, and
+    // it is the one CI runs. Pylance is not available on VSCodium in any case.
+    "python.languageServer": "None",
+    "basedpyright.analysis.diagnosticMode": "workspace",
+
+    // --- Formatting and linting: ruff, configured by pyproject.toml ---
+    "[python]": {
+      "editor.defaultFormatter": "charliermarsh.ruff",
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.fixAll.ruff": "explicit",
+        "source.organizeImports.ruff": "explicit"
+      },
+      "editor.rulers": [120]
+    },
+    "ruff.configurationPreference": "filesystemFirst",
+
+    // --- Tests: pytest, configured by pyproject.toml (testpaths, import mode) ---
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [],
+
+    // --- Other file types ---
+    "[toml]": {
+      "editor.defaultFormatter": "tamasfe.even-better-toml"
+    },
+    "[markdown]": {
+      "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+      "editor.rulers": [100],
+      "editor.wordWrap": "off"
+    },
+    "[makefile]": {
+      "editor.insertSpaces": false
+    },
+    // Left to the pre-commit hooks: a formatter here would reflow the aligned comments and the
+    // hand-wrapped command lines in the workflows.
+    "[yaml]": {
+      "editor.formatOnSave": false
+    },
+    "[github-actions-workflow]": {
+      "editor.formatOnSave": false
+    },
+    "evenBetterToml.formatter.indentString": "    ",
+    "evenBetterToml.formatter.alignComments": false,
+    "evenBetterToml.formatter.arrayAutoCollapse": false,
+    "evenBetterToml.formatter.arrayAutoExpand": false,
+    "evenBetterToml.formatter.columnWidth": 120,
+    "files.associations": {
+      // Both carry comments, which plain JSON mode flags as errors.
+      "pyrightconfig.json": "jsonc",
+      "*.code-workspace": "jsonc",
+      ".gitmessage": "git-commit"
+    },
+
+    // --- Files: the same rules .editorconfig states, for editors without that extension ---
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/*.egg-info": true,
+      "**/.pytest_cache": true,
+      "**/.ruff_cache": true
+    },
+    // Root-relative, with no `**/`, for the reason .gitignore gives: a `build` or `site`
+    // subpackage must stay searchable.
+    "search.exclude": {
+      ".venv": true,
+      ".cache": true,
+      "build": true,
+      "dist": true,
+      "htmlcov": true,
+      "site": true,
+      "coverage.xml": true,
+      "uv.lock": true
+    },
+    "files.watcherExclude": {
+      ".venv/**": true,
+      ".cache/**": true,
+      "build/**": true,
+      "dist/**": true,
+      "htmlcov/**": true,
+      "site/**": true
+    },
+
+    // --- Git ---
+    "git.inputValidationSubjectLength": 72,
+    "git.inputValidationLength": 88
+  },
+  "extensions": {
+    // All of these are published on Open VSX as well as on the Marketplace.
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.debugpy",
+      "charliermarsh.ruff",
+      "detachhead.basedpyright",
+      "tamasfe.even-better-toml",
+      "redhat.vscode-yaml",
+      "DavidAnson.vscode-markdownlint",
+      "editorconfig.editorconfig",
+      "github.vscode-github-actions"
+    ],
+    "unwantedRecommendations": [
+      // Would run a second type checker with different rules beside basedpyright.
+      "ms-python.vscode-pylance"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "osh",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "odouche_cli",
+        "args": "${input:oshArgs}",
+        "cwd": "${workspaceFolder:odouche}",
+        "console": "integratedTerminal",
+        "justMyCode": true
+      },
+      {
+        "name": "odouche-mcp (stdio)",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "odouche_mcp",
+        "cwd": "${workspaceFolder:odouche}",
+        "console": "integratedTerminal",
+        "justMyCode": true
+      },
+      {
+        "name": "pytest: current file",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "pytest",
+        "args": ["${file}", "-p", "no:randomly"],
+        "cwd": "${workspaceFolder:odouche}",
+        "console": "integratedTerminal",
+        "justMyCode": false
+      }
+    ],
+    "inputs": [
+      {
+        "id": "oshArgs",
+        "type": "promptString",
+        "description": "Arguments for osh",
+        "default": "--help"
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "check",
+        "detail": "Full gate: what CI runs",
+        "type": "shell",
+        "command": "make check",
+        "options": { "cwd": "${workspaceFolder:odouche}" },
+        "group": { "kind": "build", "isDefault": true },
+        "problemMatcher": []
+      },
+      {
+        "label": "test",
+        "detail": "pytest with coverage",
+        "type": "shell",
+        "command": "make coverage",
+        "options": { "cwd": "${workspaceFolder:odouche}" },
+        "group": { "kind": "test", "isDefault": true },
+        "problemMatcher": []
+      },
+      {
+        "label": "install",
+        "detail": "uv sync and install the git hooks",
+        "type": "shell",
+        "command": "make install",
+        "options": { "cwd": "${workspaceFolder:odouche}" },
+        "problemMatcher": []
+      },
+      {
+        "label": "docs: serve",
+        "detail": "Documentation site with live reload",
+        "type": "shell",
+        "command": "make docs-serve",
+        "options": { "cwd": "${workspaceFolder:odouche}" },
+        "isBackground": true,
+        "problemMatcher": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+// The one gate that reads Markdown as Markdown. Every rule is at
+// https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md; the defaults stand, so only
+// the rules switched off below need an argument.
+{
+  // The hook hands over tracked files only; a manual run or an editor walks the tree, where the
+  // virtualenv, the built site and the pytest cache all hold Markdown. Following .gitignore keeps
+  // one list of what is not ours instead of a second one here that drifts.
+  "gitignore": true,
+  // Tracked, and still not ours to fix: release-please writes it, and a fix applied there dies
+  // with the next release. The hook excludes the same file.
+  "ignores": ["CHANGELOG.md"],
+  "config": {
+    // Wrap width is a judgement each page makes rather than a number: a table, a long link and a
+    // fence cannot wrap at all, and prose that reads better long is left long.
+    "MD013": false,
+    // A file that opens below h1 is a section of something else: the pull request template is the
+    // body of a page whose title GitHub supplies.
+    "MD041": false,
+    // The documentation site uses content tabs and admonitions, whose bodies are indented four
+    // spaces and read as indented code blocks to a linter that does not know the syntax.
+    "MD046": false
+  }
+}

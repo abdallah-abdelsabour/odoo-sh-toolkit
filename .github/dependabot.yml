@@ -1,0 +1,33 @@
+# Version updates, which are a separate thing from Dependabot alerts: an alert says a dependency is
+# vulnerable and stops there. Everything is grouped and weekly, and every ecosystem sets a
+# seven-day cooldown, so this file never adopts a release faster than its ecosystem can withdraw
+# it. The `build` prefix keeps the squash commit a conventional one that bumps no version.
+version: 2
+updates:
+  # The one that pays for the hash pins .github/zizmor.yml requires.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: build
+      include: scope
+    groups:
+      actions:
+        patterns: ["*"]
+
+  # One lockfile at the workspace root covers the three packages and the development tools.
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: build
+      include: scope
+    groups:
+      python:
+        patterns: ["*"]

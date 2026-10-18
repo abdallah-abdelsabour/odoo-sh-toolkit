@@ -1,0 +1,186 @@
+{
+  "jsonrpc": "2.0",
+  "id": 30,
+  "result": {
+    "num_trackings": 5,
+    "trackings": [
+      {
+        "id": 930105,
+        "tracking_type": "rebuild",
+        "create_date": "2026-10-01 10:00:02",
+        "build": {
+          "id": 88240,
+          "stage": "dev",
+          "status": [
+            "progress",
+            "In Progress"
+          ],
+          "result": false,
+          "status_info": "Installing: account",
+          "url": "https://acme-shop-feature-invoicing-88240.dev.odoo.com",
+          "worker_url": "https://eupd00.odoo.com"
+        },
+        "commits": [
+          {
+            "identifier": "3f2a9c1e5b7d4f608192a3b4c5d6e7f801234567",
+            "message": "[FIX] invoicing: round the tax base per line\n\nThe total was rounded once, so lines did not add up.",
+            "provider_url": "https://github.com/Acme-Corp/Odoo-Addons/commit/3f2a9c1e5b7d4f608192a3b4c5d6e7f801234567"
+          }
+        ],
+        "pusher_name": "octo-dev",
+        "pusher_url": "https://github.com/octo-dev",
+        "pusher_avatar_url": "https://avatars.githubusercontent.com/u/1000001?v=4",
+        "source_stage": false,
+        "target_stage": false,
+        "source_value": false,
+        "target_value": false,
+        "expiration_date": false,
+        "backup_datetime_utc": false,
+        "dump_name": false,
+        "extra_info": false,
+        "from_worker_geolocation": false,
+        "to_worker_geolocation": false
+      },
+      {
+        "id": 930088,
+        "tracking_type": "push",
+        "create_date": "2026-09-30 15:42:31",
+        "build": {
+          "id": 88212,
+          "stage": "dev",
+          "status": [
+            "dropped",
+            "Dropped"
+          ],
+          "result": [
+            "success",
+            "Success"
+          ],
+          "status_info": "done",
+          "url": "https://acme-shop-feature-invoicing-88212.dev.odoo.com",
+          "worker_url": "https://eupd00.odoo.com"
+        },
+        "commits": [
+          {
+            "identifier": "3f2a9c1e5b7d4f608192a3b4c5d6e7f801234567",
+            "message": "[FIX] invoicing: round the tax base per line\n\nThe total was rounded once, so lines did not add up.",
+            "provider_url": "https://github.com/Acme-Corp/Odoo-Addons/commit/3f2a9c1e5b7d4f608192a3b4c5d6e7f801234567"
+          }
+        ],
+        "pusher_name": "octo-dev",
+        "pusher_url": "https://github.com/octo-dev",
+        "pusher_avatar_url": "https://avatars.githubusercontent.com/u/1000001?v=4",
+        "source_stage": false,
+        "target_stage": false,
+        "source_value": false,
+        "target_value": false,
+        "expiration_date": false,
+        "backup_datetime_utc": false,
+        "dump_name": false,
+        "extra_info": false,
+        "from_worker_geolocation": false,
+        "to_worker_geolocation": false
+      },
+      {
+        "id": 930051,
+        "tracking_type": "push",
+        "create_date": "2026-09-29 09:13:02",
+        "build": {
+          "id": 88150,
+          "stage": "dev",
+          "status": [
+            "dropped",
+            "Dropped"
+          ],
+          "result": [
+            "success",
+            "Success"
+          ],
+          "status_info": "done",
+          "url": "https://acme-shop-feature-invoicing-88150.dev.odoo.com",
+          "worker_url": "https://eupd00.odoo.com"
+        },
+        "commits": [
+          {
+            "identifier": "9b8a7c6d5e4f30211203f4e5d6c7b8a901234567",
+            "message": "[ADD] invoicing: export the ledger as CSV",
+            "provider_url": "https://github.com/Acme-Corp/Odoo-Addons/commit/9b8a7c6d5e4f30211203f4e5d6c7b8a901234567"
+          }
+        ],
+        "pusher_name": "octo-dev",
+        "pusher_url": "https://github.com/octo-dev",
+        "pusher_avatar_url": "https://avatars.githubusercontent.com/u/1000001?v=4",
+        "source_stage": false,
+        "target_stage": false,
+        "source_value": false,
+        "target_value": false,
+        "expiration_date": false,
+        "backup_datetime_utc": false,
+        "dump_name": false,
+        "extra_info": false,
+        "from_worker_geolocation": false,
+        "to_worker_geolocation": false
+      },
+      {
+        "id": 930047,
+        "tracking_type": "push",
+        "create_date": "2026-09-29 08:39:48",
+        "build": {
+          "id": 88122,
+          "stage": "dev",
+          "status": [
+            "dropped",
+            "Dropped"
+          ],
+          "result": [
+            "failed",
+            "Failed"
+          ],
+          "status_info": "done",
+          "url": "https://acme-shop-feature-invoicing-88122.dev.odoo.com",
+          "worker_url": "https://eupd00.odoo.com"
+        },
+        "commits": [
+          {
+            "identifier": "9b8a7c6d5e4f30211203f4e5d6c7b8a901234567",
+            "message": "[ADD] invoicing: export the ledger as CSV",
+            "provider_url": "https://github.com/Acme-Corp/Odoo-Addons/commit/9b8a7c6d5e4f30211203f4e5d6c7b8a901234567"
+          }
+        ],
+        "pusher_name": "octo-dev",
+        "pusher_url": "https://github.com/octo-dev",
+        "pusher_avatar_url": "https://avatars.githubusercontent.com/u/1000001?v=4",
+        "source_stage": false,
+        "target_stage": false,
+        "source_value": false,
+        "target_value": false,
+        "expiration_date": false,
+        "backup_datetime_utc": false,
+        "dump_name": false,
+        "extra_info": false,
+        "from_worker_geolocation": false,
+        "to_worker_geolocation": false
+      },
+      {
+        "id": 930046,
+        "tracking_type": "stage",
+        "create_date": "2026-09-29 08:39:40",
+        "build": false,
+        "commits": [],
+        "pusher_name": false,
+        "pusher_url": false,
+        "pusher_avatar_url": false,
+        "source_stage": false,
+        "target_stage": "dev",
+        "source_value": false,
+        "target_value": false,
+        "expiration_date": false,
+        "backup_datetime_utc": false,
+        "dump_name": false,
+        "extra_info": false,
+        "from_worker_geolocation": false,
+        "to_worker_geolocation": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+# What the secret scanner is allowed to walk past, and why: nothing. The default rules stand with
+# no allowlist. Test fixtures replay Odoo.sh responses and must be scrubbed of session values
+# before they are committed, so a finding in one is a real finding. An entry added here needs the
+# argument for it written beside it.
+
+[extend]
+useDefault = true
+
+# Matches on the shape of the value, in any file. The placeholder `session_id=REDACTED` is too
+# short to match, so it needs no allowlist.
+[[rules]]
+id = "odoo-session-cookie"
+description = "Odoo.sh session cookie value. Replace it with the placeholder: session_id=REDACTED"
+regex = '''(?i)(?:session_id["']?\s*[=:]\s*["']?|"name"\s*:\s*"session_id"\s*,\s*"value"\s*:\s*")([A-Za-z0-9_-]{20,})'''
+secretGroup = 1
+keywords = ["session_id"]

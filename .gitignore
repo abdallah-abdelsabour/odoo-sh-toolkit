@@ -1,0 +1,58 @@
+# Debug a path: git check-ignore -v <file>
+#
+# Output directories are anchored to the repository root with a leading slash. A bare `build/` or
+# `site/` matches at every depth, and Odoo.sh has builds: an unanchored rule would silently keep a
+# `odouche/build/` subpackage out of the repository.
+
+# --- Python artifacts ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+/.venv/
+.pytest_cache/
+.ruff_cache/
+
+# --- Coverage ---
+.coverage
+.coverage.*
+/coverage.xml
+/htmlcov/
+
+# --- Build and distribution artifacts ---
+/build/
+/dist/
+
+# --- Documentation site and its build cache (zensical) ---
+/site/
+/.cache/
+
+# --- Captured traffic ---
+# A browser capture of the Odoo.sh web interface is how upstream behaviour gets worked out, and
+# it carries the session cookie of whoever recorded it. Fixtures are written by hand from one,
+# scrubbed, and committed under tests/; the capture itself never is.
+*.har
+
+# --- Secrets and local env ---
+.env
+.env.*
+!.env.example
+
+# --- IDE / editor ---
+# `.vscode/*` rather than `.vscode/`: a bare directory ignore stops git descending into it at all,
+# so the negation below would be inert. The workspace file is the shared editor setup; everything
+# else in there (settings.json and the like) is a personal override.
+.idea/
+.vscode/*
+!.vscode/odouche.code-workspace
+*.swp
+*~
+
+# --- OS noise ---
+.DS_Store
+Thumbs.db
+
+# --- AI agents & tools ---
+# The whole directory, not just the local settings: the hooks and skills kept there drive a
+# private task tracker, and this repository is public. CLAUDE.md is the shared part.
+/.claude/
+.mcp.json

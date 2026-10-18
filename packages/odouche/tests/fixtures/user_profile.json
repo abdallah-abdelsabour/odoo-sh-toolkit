@@ -1,0 +1,15 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "id": 7301,
+    "name": "Octo Dev",
+    "username": "octo-dev",
+    "email": "dev@example.com",
+    "avatar_url": "https://avatars.githubusercontent.com/u/1000001",
+    "url": "https://github.com/octo-dev",
+    "notification_push": "off",
+    "notification_mail": "warning",
+    "changelog": true
+  }
+}

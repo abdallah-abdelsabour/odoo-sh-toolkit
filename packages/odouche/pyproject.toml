@@ -1,0 +1,40 @@
+[project]
+name = "odouche"
+version = "0.4.0" # x-release-please-version
+description = "Unofficial Python client for Odoo.sh: projects, branches, builds and logs"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Avanserv", email = "avs@avanserv.com" }
+]
+requires-python = ">=3.12"
+keywords = ["odoo", "odoo.sh", "api", "client"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
+]
+# Declared with the code that imports them, never ahead of it: deptry fails on a dependency
+# nothing imports, and on an import nothing declares.
+dependencies = [
+    "httpx2[ws]>=2.13.1",
+    "keyring>=25.7.0",
+    "wsproto>=1.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/avanserv/odouche"
+Documentation = "https://avanserv.github.io/odouche/"
+Issues = "https://github.com/avanserv/odouche/issues"
+Changelog = "https://github.com/avanserv/odouche/blob/main/CHANGELOG.md"
+
+[build-system]
+requires = ["uv_build>=0.11.11,<0.13"]
+build-backend = "uv_build"

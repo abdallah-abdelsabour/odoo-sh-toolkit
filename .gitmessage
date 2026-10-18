@@ -1,0 +1,21 @@
+# <type>(<scope>): Sentence case summary, under 72 characters
+#
+# Then a blank line, then the body: why this change exists.
+#
+# The diff already says what changed. What it cannot say is the problem being solved,
+# the constraint that ruled out the obvious approach, or the failure mode that
+# odd-looking line prevents. Write that, in prose. Open with the rationale rather than
+# restating the summary above.
+#
+# Reach for a bullet list only when the content is genuinely a list of peers, never as
+# a way to enumerate the files you touched.
+#
+# type: feat fix refactor docs chore test style ci perf build
+# scope (optional): lib cli mcp docs ci build ...
+#
+# feat -> minor bump, fix docs perf -> patch, feat! or a BREAKING CHANGE: footer -> major
+# (minor while the version is below 1.0). Everything else bumps nothing.
+# Release Please owns every version; never edit one.
+#
+# Enable this template with:  git config commit.template .gitmessage
+# The full conventions are in CONTRIBUTING.md.

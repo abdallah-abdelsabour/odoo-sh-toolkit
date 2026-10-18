@@ -1,0 +1,13 @@
+// Single source of truth for basedpyright, editors included: a pyrightconfig.json outranks a
+// [tool.basedpyright] section in pyproject.toml, so the configuration lives here and only here.
+{
+  "include": ["packages", "scripts", "examples"],
+  "extraPaths": ["scripts"],
+  "venvPath": ".",
+  "venv": ".venv",
+  // The floor `requires-python` sets, so a construct newer than it fails here rather than on a
+  // user's interpreter.
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "standard",
+  "reportDeprecated": "error"
+}

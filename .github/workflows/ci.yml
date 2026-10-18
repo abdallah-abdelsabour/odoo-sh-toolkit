@@ -1,0 +1,191 @@
+name: CI
+
+on:
+  pull_request:
+    # This list is load-bearing: naming any type replaces the implied set.
+    types: [opened, synchronize, reopened]
+  # The run the README badge reports.
+  push:
+    branches:
+      - main
+
+# A superseded push to a pull request should not keep burning minutes, so its in-progress runs are
+# cancelled when a newer commit lands. A run on main is left to finish.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Read-only by default, so a job gets write access only by asking for it in its own block and
+# saying there what it needs it for. No job in this file does.
+permissions:
+  contents: read
+
+jobs:
+  pre-commit:
+    name: Pre-commit Hooks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: true
+
+      # The Python hooks run the tools from the project environment, so it has to exist first.
+      - name: Install dependencies
+        run: uv sync --locked
+
+      # Format, lint, type check, dependency and dead-code checks all live here, along with the
+      # workflow audits. The gitleaks hook is the one that proves nothing in this job: it reads
+      # the staged diff, and nothing is staged. The Security Scan job covers the tree instead.
+      - name: Run pre-commit
+        uses: j178/prek-action@4e14d07f9231acabce116ccfca13b13dd9755ece # v3.0.0
+        with:
+          extra-args: --all-files
+
+  tests:
+    name: Tests (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.12', '3.13', '3.14']
+    env:
+      # Outranks .python-version, which pins the floor for local work.
+      UV_PYTHON: ${{ matrix.python }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      # The threshold is `fail_under` in pyproject.toml, so every interpreter is held to it.
+      - name: Run the tests with coverage
+        run: uv run pytest --cov --cov-report=term-missing
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Pinned binary downloads rather than vendor actions, each checked against a digest recorded
+      # here. Dependabot does not see these: bump the version and its digest together.
+      - name: Install the scanners
+        env:
+          GITLEAKS_VERSION: 8.30.1
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+          OSV_VERSION: 2.6.0
+          OSV_SHA256: ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108
+        run: |
+          curl -sSfL -o "$RUNNER_TEMP/gitleaks.tar.gz" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfL -o "$RUNNER_TEMP/osv-scanner" \
+            "https://github.com/google/osv-scanner/releases/download/v${OSV_VERSION}/osv-scanner_linux_amd64"
+          printf '%s  %s\n' \
+            "$GITLEAKS_SHA256" "$RUNNER_TEMP/gitleaks.tar.gz" \
+            "$OSV_SHA256" "$RUNNER_TEMP/osv-scanner" \
+            | sha256sum --check --strict
+          tar -xz -C "$RUNNER_TEMP" -f "$RUNNER_TEMP/gitleaks.tar.gz" gitleaks
+          chmod +x "$RUNNER_TEMP/osv-scanner"
+
+      # The step the gitleaks hook cannot replace: scanning the working tree is what makes a green
+      # Security Scan mean there are no secrets in it. .gitleaks.toml says what is allowed past.
+      - name: Scan the working tree for secrets
+        run: |
+          "$RUNNER_TEMP/gitleaks" dir . --redact --no-banner --exit-code 1
+
+      # Worth having beside Dependabot alerts: an alert notifies and a gate refuses.
+      - name: Scan the lockfile for known vulnerabilities
+        run: |
+          "$RUNNER_TEMP/osv-scanner" scan source --lockfile=uv.lock
+
+  build:
+    name: Build & Install
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: true
+
+      - name: Build the distributions
+        run: make build
+
+      # What a user gets, rather than what the workspace has: the wheels alone, in an environment
+      # that has never seen the source tree. This is also what exercises the `__main__` shims and
+      # the console scripts, which the test suite does not import.
+      - name: Install the wheels into a clean environment
+        run: |
+          uv venv "$RUNNER_TEMP/smoke"
+          uv pip install --python "$RUNNER_TEMP/smoke" dist/*.whl
+          "$RUNNER_TEMP/smoke/bin/osh" --version
+          "$RUNNER_TEMP/smoke/bin/python" -m odouche_cli --version
+          "$RUNNER_TEMP/smoke/bin/python" -c "import odouche, odouche_mcp.server"
+
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Build the site
+        run: make docs
+
+  # Single aggregation gate: passes if no job failed or was cancelled, and a skipped job counts as
+  # a pass, exactly as GitHub treats a skipped required check. This is the one required status
+  # check, so branch protection stays stable as jobs are added.
+  ci-gate:
+    name: CI Passed
+    needs:
+      - pre-commit
+      - tests
+      - security
+      - build
+      - docs
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Evaluate CI job results
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+        run: |
+          jq -r 'to_entries[] | "\(.key): \(.value.result)"' <<<"$NEEDS_JSON"
+          jq -e 'all(.[]; .result == "success" or .result == "skipped")' <<<"$NEEDS_JSON" >/dev/null

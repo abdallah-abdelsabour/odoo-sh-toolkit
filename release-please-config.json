@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "include-component-in-tag": false,
+  "bump-minor-pre-major": true,
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "package-name": "odouche",
+      "extra-files": [
+        "packages/odouche/pyproject.toml",
+        "packages/odouche-cli/pyproject.toml",
+        "packages/odouche-mcp/pyproject.toml",
+        "packages/odouche-mcp/README.md",
+        "docs/mcp.md"
+      ]
+    }
+  }
+}

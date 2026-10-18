@@ -1,0 +1,241 @@
+[
+  [
+    {
+      "id": 700101,
+      "message": {
+        "type": "bus.bus/im_status_updated",
+        "payload": {
+          "presence_status": "online",
+          "im_status": "online",
+          "partner_id": 9001
+        }
+      }
+    }
+  ],
+  [
+    {
+      "id": 700214,
+      "message": {
+        "type": "paas.repository/build_event",
+        "payload": {
+          "branch_id": 51044,
+          "build_id": 88241,
+          "values": {
+            "id": 88241,
+            "result": false,
+            "status": "progress"
+          },
+          "repository_id": 4217
+        }
+      }
+    },
+    {
+      "id": 700215,
+      "message": {
+        "type": "paas.repository/new_tracking",
+        "payload": {
+          "build_id": 88241,
+          "branch_id": 51044,
+          "repository_id": 4217
+        }
+      }
+    }
+  ],
+  [
+    {
+      "id": 700390,
+      "message": {
+        "type": "paas.repository/build_event",
+        "payload": {
+          "branch_id": 51044,
+          "build_id": 88241,
+          "values": {
+            "id": 88241,
+            "result": false,
+            "status": "progress",
+            "status_info": "Starting build..."
+          },
+          "repository_id": 4217
+        }
+      }
+    }
+  ],
+  [
+    {
+      "id": 700512,
+      "message": {
+        "type": "paas.repository/build_event",
+        "payload": {
+          "branch_id": 51044,
+          "build_id": 88240,
+          "values": {
+            "id": 88240,
+            "name": "acme-shop-feature-invoicing-88240",
+            "result": "success",
+            "status": "dropped",
+            "status_info": "done",
+            "branch_id": [
+              51044,
+              "feature-invoicing"
+            ],
+            "stage": "dev",
+            "head_commit_msg": "[FIX] invoicing: round the tax base per line\n\nThe total was rounded once, so lines did not add up.",
+            "head_commit_author": "Jane Doe",
+            "head_commit_timestamp": "2026-09-30 15:42:10",
+            "head_commit_url": "https://github.com/Acme-Corp/Odoo-Addons/commit/3f2a9c1e5b7d4f608192a3b4c5d6e7f801234567",
+            "run_time": "0:06:05",
+            "start_datetime": "2026-10-01 10:00:30",
+            "odoo_branch": "19.0",
+            "url": "https://acme-shop-feature-invoicing-88240.dev.odoo.com",
+            "worker_url": "https://eupd00.odoo.com",
+            "expiration_date": false,
+            "machine": "ubuntu-24.04"
+          },
+          "repository_id": 4217
+        }
+      }
+    },
+    {
+      "id": 700513,
+      "message": {
+        "type": "paas.repository/build_event",
+        "payload": {
+          "branch_id": 51044,
+          "build_id": 88241,
+          "values": {
+            "id": 88241,
+            "name": "acme-shop-feature-invoicing-88241",
+            "result": false,
+            "status": "progress",
+            "status_info": "Installing dependencies...",
+            "branch_id": [
+              51044,
+              "feature-invoicing"
+            ],
+            "stage": "dev",
+            "head_commit_msg": "[FIX] invoicing: round the tax base per line\n\nThe total was rounded once, so lines did not add up.",
+            "head_commit_author": "Jane Doe",
+            "head_commit_timestamp": "2026-09-30 15:42:10",
+            "head_commit_url": "https://github.com/Acme-Corp/Odoo-Addons/commit/3f2a9c1e5b7d4f608192a3b4c5d6e7f801234567",
+            "run_time": false,
+            "start_datetime": "2026-10-01 11:30:40",
+            "odoo_branch": "19.0",
+            "url": "https://acme-shop-feature-invoicing-88241.dev.odoo.com",
+            "worker_url": "https://eupd00.odoo.com",
+            "expiration_date": false,
+            "machine": "ubuntu-24.04"
+          },
+          "repository_id": 4217
+        }
+      }
+    }
+  ],
+  [
+    {
+      "id": 700871,
+      "message": {
+        "type": "paas.repository/build_event",
+        "payload": {
+          "branch_id": 51044,
+          "build_id": 88241,
+          "values": {
+            "id": 88241,
+            "name": "acme-shop-feature-invoicing-88241",
+            "result": false,
+            "status": "progress",
+            "status_info": "Installing: account",
+            "branch_id": [
+              51044,
+              "feature-invoicing"
+            ],
+            "stage": "dev",
+            "head_commit_msg": "[FIX] invoicing: round the tax base per line\n\nThe total was rounded once, so lines did not add up.",
+            "head_commit_author": "Jane Doe",
+            "head_commit_timestamp": "2026-09-30 15:42:10",
+            "head_commit_url": "https://github.com/Acme-Corp/Odoo-Addons/commit/3f2a9c1e5b7d4f608192a3b4c5d6e7f801234567",
+            "run_time": false,
+            "start_datetime": "2026-10-01 11:30:40",
+            "odoo_branch": "19.0",
+            "url": "https://acme-shop-feature-invoicing-88241.dev.odoo.com",
+            "worker_url": "https://eupd00.odoo.com",
+            "expiration_date": false,
+            "machine": "ubuntu-24.04"
+          },
+          "repository_id": 4217
+        }
+      }
+    }
+  ],
+  [
+    {
+      "id": 701430,
+      "message": {
+        "type": "paas.repository/build_event",
+        "payload": {
+          "branch_id": 51044,
+          "build_id": 88241,
+          "values": {
+            "id": 88241,
+            "name": "acme-shop-feature-invoicing-88241",
+            "result": false,
+            "status": "progress",
+            "status_info": "Testing: invoicing",
+            "branch_id": [
+              51044,
+              "feature-invoicing"
+            ],
+            "stage": "dev",
+            "head_commit_msg": "[FIX] invoicing: round the tax base per line\n\nThe total was rounded once, so lines did not add up.",
+            "head_commit_author": "Jane Doe",
+            "head_commit_timestamp": "2026-09-30 15:42:10",
+            "head_commit_url": "https://github.com/Acme-Corp/Odoo-Addons/commit/3f2a9c1e5b7d4f608192a3b4c5d6e7f801234567",
+            "run_time": false,
+            "start_datetime": "2026-10-01 11:30:40",
+            "odoo_branch": "19.0",
+            "url": "https://acme-shop-feature-invoicing-88241.dev.odoo.com",
+            "worker_url": "https://eupd00.odoo.com",
+            "expiration_date": false,
+            "machine": "ubuntu-24.04"
+          },
+          "repository_id": 4217
+        }
+      }
+    }
+  ],
+  [
+    {
+      "id": 702066,
+      "message": {
+        "type": "paas.repository/build_event",
+        "payload": {
+          "branch_id": 51044,
+          "build_id": 88241,
+          "values": {
+            "id": 88241,
+            "name": "acme-shop-feature-invoicing-88241",
+            "result": "success",
+            "status": "done",
+            "status_info": "done",
+            "branch_id": [
+              51044,
+              "feature-invoicing"
+            ],
+            "stage": "dev",
+            "head_commit_msg": "[FIX] invoicing: round the tax base per line\n\nThe total was rounded once, so lines did not add up.",
+            "head_commit_author": "Jane Doe",
+            "head_commit_timestamp": "2026-09-30 15:42:10",
+            "head_commit_url": "https://github.com/Acme-Corp/Odoo-Addons/commit/3f2a9c1e5b7d4f608192a3b4c5d6e7f801234567",
+            "run_time": "0:02:17",
+            "start_datetime": "2026-10-01 11:30:40",
+            "odoo_branch": "19.0",
+            "url": "https://acme-shop-feature-invoicing-88241.dev.odoo.com",
+            "worker_url": "https://eupd00.odoo.com",
+            "expiration_date": false,
+            "machine": "ubuntu-24.04"
+          },
+          "repository_id": 4217
+        }
+      }
+    }
+  ]
+]

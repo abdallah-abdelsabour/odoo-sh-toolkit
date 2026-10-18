@@ -1,0 +1,32 @@
+name: PR Title
+
+# Its own workflow rather than a job in ci.yml, because it has to answer `edited`: a title fixed
+# after opening must be able to turn this green, and the rest of CI has no reason to re-run when
+# only a title or a description moved.
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+concurrency:
+  group: pr-title-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  pr-title:
+    name: Pull Request Title
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      # Pull requests are squash-merged, so the title is the commit Release Please reads to decide
+      # the next version and to write the changelog. CONTRIBUTING.md has the convention.
+      - name: Check the title is a conventional commit
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pattern='^(feat|fix|refactor|docs|chore|test|style|ci|perf|build|revert)(\([a-z0-9._-]+\))?!?: .+'
+          if [[ ! "$TITLE" =~ $pattern ]]; then
+            echo "::error title=Pull request title::'$TITLE' is not '<type>(<scope>): <summary>'. See CONTRIBUTING.md."
+            exit 1
+          fi

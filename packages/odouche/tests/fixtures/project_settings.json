@@ -1,0 +1,15 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "title": "acme-shop",
+    "repository": {
+      "id": 4217,
+      "project_name": "acme-shop",
+      "odoo_branch": "19.0",
+      "geolocation": "Europe",
+      "pays_dedicated": false,
+      "ip_whitelist": "1.1.1.1\n8.8.8.8"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "jsonrpc": "2.0",
+  "id": 38,
+  "result": [
+    {"name": "odoo", "write_date": "2026-09-30 08:00:00", "size": "0 bytes"},
+    {"name": "pip", "write_date": "2026-10-01 10:01:10", "size": "2 MB"},
+    {"name": "install", "write_date": "2026-10-01 10:02:05", "size": "156 KB"}
+  ]
+}

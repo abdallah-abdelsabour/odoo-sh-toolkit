@@ -1,0 +1,75 @@
+[project]
+site_name = "odouche"
+site_description = "Unofficial toolkit for Odoo.sh: a Python library, the osh command-line tool and an MCP server."
+site_url = "https://avanserv.github.io/odouche/"
+repo_url = "https://github.com/avanserv/odouche"
+repo_name = "avanserv/odouche"
+copyright = "Copyright &copy; 2026 Avanserv. Not affiliated with Odoo S.A."
+nav = [
+    { "Overview" = "index.md" },
+    { "Library" = "library.md" },
+    { "CLI" = "cli.md" },
+    { "CLI reference" = "cli-reference.md" },
+    { "MCP server" = "mcp.md" },
+    { "MCP reference" = "mcp-reference.md" },
+    { "Security" = "security.md" },
+    { "Unofficial status" = "unofficial.md" },
+    { "Upstream reference" = "upstream.md" },
+    { "API reference" = "reference.md" },
+    { "Manual tests" = "manual-tests.md" },
+    { "Contributing" = "contributing.md" },
+]
+
+[project.theme]
+language = "en"
+features = [
+    "content.code.copy",
+    "navigation.footer",
+    "navigation.instant",
+    "navigation.top",
+    "search.highlight",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+
+[project.markdown_extensions]
+admonition = {}
+attr_list = {}
+toc.permalink = true
+pymdownx.details = {}
+pymdownx.highlight.anchor_linenums = true
+pymdownx.inlinehilite = {}
+pymdownx.superfences = {}
+pymdownx.tabbed.alternate_style = true
+
+# The API reference is generated from the docstrings ruff's `D` rules already require, so the
+# reference cannot describe a signature the code does not have.
+[project.plugins.mkdocstrings.handlers.python]
+paths = ["packages/odouche/src"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "google"
+show_root_heading = true
+show_source = false
+members_order = "source"
+heading_level = 3
+show_symbol_type_heading = true
+separate_signature = true
+show_signature_annotations = true
+signature_crossrefs = true
+merge_init_into_class = true

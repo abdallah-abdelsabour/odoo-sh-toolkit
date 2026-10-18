@@ -1,0 +1,217 @@
+# The workspace root. It is never built or published: it exists so that one `uv sync` installs the
+# three packages together, and so that every tool reads one configuration. Its version moves in
+# lockstep with theirs because Release Please writes it, not because anything installs it.
+[project]
+name = "odouche-workspace"
+version = "0.4.0"
+description = "Workspace root for odouche, the unofficial Odoo.sh toolkit"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "odouche",
+    "odouche-cli",
+    "odouche-mcp",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+odouche = { workspace = true }
+odouche-cli = { workspace = true }
+odouche-mcp = { workspace = true }
+
+[tool.pytest.ini_options]
+testpaths = ["packages", "scripts"]
+# Importlib mode puts no directory on the path, and `scripts` is not a package.
+pythonpath = ["scripts"]
+# Three `tests/` trees with no `__init__.py` between them: under the default import mode two files
+# sharing a basename collide, and importlib mode is what lets each package keep the obvious names.
+addopts = ["--import-mode=importlib", "--strict-markers", "--strict-config"]
+# Zero warnings in test output: an uncaught warning fails the run.
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+source_pkgs = ["odouche", "odouche_cli", "odouche_mcp"]
+branch = true
+# `python -m <package>` shims: one import and one call, exercised by the build smoke test in CI
+# rather than in-process.
+omit = ["**/__main__.py"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.ruff]
+src = ["packages/*/src", "scripts"]
+target-version = "py312"
+fix = true
+show-fixes = true
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    # Entire rule-sets
+    "A",        # flake8-builtins
+    "F",        # PyFlakes
+    "E",        # pycodestyle errors
+    "W",        # pycodestyle warnings
+    "I",        # isort
+    "D",        # PyDocStyle
+    "ASYNC",    # flake8-async
+    "FBT",      # flake8-boolean-trap
+    "B",        # flake8-bugbear
+    "C4",       # flake8-comprehensions
+    "DTZ",      # flake8-datetimez
+    "T10",      # flake8-debugger
+    "EXE",      # flake8-executable
+    "ISC",      # flake8-implicit-str-concat
+    "ICN",      # flake8-import-conventions
+    "PIE",      # flake8-pie
+    "T20",      # flake8-print
+    "RET",      # flake8-return
+    "ERA",      # flake8-eradicate
+    "PL",       # Pylint
+    "TRY",      # tryceratops
+    "RUF",      # ruff-specific-rules
+    "N",        # PEP8 naming
+    "UP",       # PyUpgrade
+    "S",        # flake8-bandit
+    "BLE",      # flake8-blind-except
+    "Q",        # flake8-quotes
+    "RSE",      # flake8-raise
+    "SLOT",     # flake8-slots
+    "SIM",      # flake8-simplify
+    "TID",      # flake8-tidy-imports
+    "INT",      # flake8-gettext
+    "PGH",      # flake8-pygrep-hooks
+    "FLY",      # flynt
+    "PERF",     # perflint
+    "PT",       # flake8-pytest-style
+    "TC",       # flake8-type-checking
+
+    # Explicitly selected rules
+    "COM818",   # trailing comma on bare tuple prohibited
+    "G010",     # logging statement uses `warn` instead of `warning`
+    "G101",     # logging statement uses an `extra` field that clashes with LogRecord
+    "G201",     # `logging.exception` should be used instead of `logging.error(..., exc_info=True)`
+    "G202",     # logging statement has redundant `exc_info`
+    "C408",     # unnecessary dict call - rewrite as a literal
+    "D212",     # multi-line docstring summary should start at the first line
+    "N806",     # variable in function should be lowercase
+    "PLR09",    # too-many-*; unwanted code complexity checks
+    "PLR2004",  # magic value used in comparison, consider replacing {value} with a constant variable
+    "PLW0602",  # `global` for variable but no assignment
+    "RET505",   # unnecessary else/elif after return statement
+    "S101",     # use of assert detected
+    "S307",     # usage of builtin `eval()`
+    "S311",     # cryptographic usage of `random` module
+    "S603",     # subprocess call - check for execution of untrusted input
+    "SIM105",   # prefer `contextlib.suppress` over `try/except/pass`
+]
+ignore = [
+    "PERF203",  # try-except within a for loop incurs performance overhead
+    "D105",     # Missing docstring in magic method
+    "D107",     # Missing docstring in `__init__`
+    "D203",     # 1 blank line required before class docstring
+    "D205",     # 1 blank line required between summary line and description
+    "D213",     # multi-line docstring summary should start at the first line
+    "E731",     # do not assign a lambda expression, use a def
+    "RUF012",   # mutable class attributes should be annotated with typing.ClassVar
+    "S404",     # usage of `subprocess` module
+    "TRY003",   # long message in exception call
+    "TRY301",   # raise within try - abstract raise to an inner function
+    "PLR0913",  # too-many-arguments in function definition
+
+    # Ruff format incompatible/overlaps
+    "E111",     # indentation-with-invalid-multiple
+    "E114",     # indentation-with-invalid-multiple-comment
+    "E117",     # over-indented
+    "E501",     # line-too-long
+    "ISC001",   # single-line-implicit-string-concatenation
+    "ISC002",   # multi-line-implicit-string-concatenation
+    "W191",     # tab-indentation
+    "B008",     # do not perform function call in argument defaults
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = [
+    "F401",     # ignore unused imports
+    "F403",     # ignore * imports
+    "I001",     # ignore unsorted imports
+]
+"**/tests/**" = [
+    "D",        # ignore docstring rules
+    # A test's parameter list is its fixture list. pytest injects fixtures positionally by name,
+    # so the count is a statement about how much setup the case needs, not about an argument list
+    # someone designed and could shorten with a keyword-only marker.
+    "PLR0917",  # too-many-positional-arguments
+    "S101",     # use of assert detected
+    "S105",     # hardcoded password string (test fixtures use dummy secrets)
+    "S106",     # hardcoded password argument (test fixtures use dummy secrets)
+    "S107",     # hardcoded password default (test fixtures use dummy secrets)
+    "PLR2004",  # magic value used in comparison
+    "PLC0415",  # allow local imports for necessary test setup/bootstrap
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+combine-as-imports = true
+known-first-party = ["odouche", "odouche_cli", "odouche_mcp"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 8
+
+[tool.ruff.lint.pylint]
+max-branches = 15
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+docstring-code-line-length = 120
+line-ending = "lf"
+
+# basedpyright is configured in pyrightconfig.json, deliberately not here: a found
+# pyrightconfig.json outranks a [tool.basedpyright] section, so a block here could only drift out
+# of step with the one in force.
+
+# codespell does not read .gitignore, so a manual `codespell` walks the virtualenv and the built
+# site. The hook reads this table too, which is why it carries no `exclude` of its own. `uv.lock`
+# is a bare name because the hook hands files over without the leading `./` a tree walk gives them.
+[tool.codespell]
+skip = "uv.lock,./.git,./.venv,./.cache,./site,./dist,./build,./htmlcov,./coverage.xml,*.har"
+
+[tool.vulture]
+paths = ["packages", "scripts", "examples"]
+min_confidence = 80
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.40.1",
+    "deptry>=0.25.1",
+    "mkdocstrings-python>=2.0.9",
+    "prek>=0.5.4",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "pytest-randomly>=5.0.0",
+    "ruff>=0.16.9",
+    "vulture>=2.16",
+    "zensical>=0.0.67",
+    "zizmor>=1.30.1",
+]
